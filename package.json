@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "dependencies": {
     "discord.js": "^14.14.1",
-    "dom-parser": "^1.1.5",
     "dotenv": "^16.3.1",
     "jsdom": "^23.0.1",
     "log4js": "^6.9.1",
