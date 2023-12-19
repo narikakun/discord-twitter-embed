@@ -10,13 +10,17 @@ module.exports = {
             if (msg.author.bot) return;
             let urls = String(msg.content).match(/https?:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#\u3000-\u30FE\u4E00-\u9FA0\uFF01-\uFFE3]+/g);
             if (!urls) return;
-            for (const url of urls.slice(0, 4)) {
+            let counter = 0;
+            for (const url of urls) {
                 let tweetUrlRegex = /https:\/\/(?:x\.com|twitter\.com)\/([^\/]+)\/status\/([^\/]+)/;
                 let matches = url.match(tweetUrlRegex);
-                if (!matches) return;
-                msg.client.logger.debug(`[${msg.author.id}] ${url}`);
+                if (!matches || counter > 4) return;
                 let userName = matches[1];
+                if (/[^A-Za-z0-9_]/.test(userName)) continue;
                 let tweetID = matches[2];
+                if (/[^0-9]/.test(tweetID)) continue;
+                msg.client.logger.debug(`[${msg.author.id}] ${url}`);
+                counter++;
                 const instanceUrl = "https://nitter.uni-sonia.com";
                 let getTweet = await requestPromise({
                     "url": `${instanceUrl}/${userName}/status/${tweetID}`,
